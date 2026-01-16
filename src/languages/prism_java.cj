@@ -1,8 +1,4 @@
-/*
- * @Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
- */
-
-package prism4cj.languages
+package cangjie_tpc::prism4cj.languages
 
 public class PrismJava {
     public static func create(prism: Prism): Grammar {
@@ -39,7 +35,7 @@ public class PrismJava {
             "class-name",
             ArrayList<Token>([
                 Prism.token("generics",
-                Prism.pattern(Regex("<\\s*\\w+(?:\\.\\w+)?(?:\\s*,\\s*\\w+(?:\\.\\w+)?)*>", RegexFlag.IgnoreCase),
+                Prism.pattern(Regex("<\\s*\\w+(?:\\.\\w+)?(?:\\s*,\\s*\\w+(?:\\.\\w+)?)*>", RegexFlag.IgnoreCase),/*cjlint-ignore !G.CHK.04 */
                 false, false, "function",
                 GrammarImpl("inside",
                 ArrayList<Token>([keyword, Prism.token("punctuation", Prism.pattern(Regex("[<>(),.:]")))]))))])

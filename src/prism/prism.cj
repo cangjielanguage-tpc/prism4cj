@@ -1,8 +1,4 @@
-/*
- * @Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
- */
-
-package prism4cj.prism
+package cangjie_tpc::prism4cj.prism
 
 internal import std.collection.ArrayList
 internal import std.collection.HashMap

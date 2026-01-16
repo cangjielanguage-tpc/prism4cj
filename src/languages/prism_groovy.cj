@@ -1,8 +1,4 @@
-/*
- * @Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
- */
-
-package prism4cj.languages
+package cangjie_tpc::prism4cj.languages
 
 public class PrismGroovy {
     public static func create(prism: Prism): Grammar {
@@ -17,7 +13,7 @@ public class PrismGroovy {
                 ))),
                 Prism.token("string",
                     Prism.pattern(Regex("(\"\"\"|''')[\\s\\S]*?\\1|(?:\\$\\/)(?:\\$\\/\\$|[\\s\\S])*?\\/\\$"), false,
-                    true), Prism.pattern(Regex("([\"'\\/])(?:\\\\.|(?!\\1)[^\\\\\\r\\n])*\\1"), false, true)),
+                    true), Prism.pattern(Regex("([\"'\\/])(?:\\\\.|(?!\\1)[^\\\\\\r\\n])*\\1"), false, true)),/*cjlint-ignore !G.CHK.04 */
                 Prism.token("number",
                     Prism.pattern(
                     Regex(
