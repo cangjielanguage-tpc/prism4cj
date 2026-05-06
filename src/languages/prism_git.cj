@@ -1,8 +1,4 @@
-/*
- * @Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
- */
-
-package prism4cj.languages
+package cangjie_tpc::prism4cj.languages
 
 public class PrismGit {
     public static func create(): Grammar {
