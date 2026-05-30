@@ -61,7 +61,7 @@ public class PrismMarkdown {
                 Prism.token("blockquote", Prism.pattern(Regex("^>(?:[\\t ]*>)*", RegexFlag.MultiLine))),
                 Prism.token(
                     "code",
-                    Prism.pattern(Regex("^(?: {4}|\\t)${wildcard}+", RegexFlag.MultiLine), false, false, "keyword"),
+                    Prism.pattern(Regex("^(?: {4}|\\t)${WILDCARD}+", RegexFlag.MultiLine), false, false, "keyword"),
                     Prism.pattern(Regex("``.+?``|`[^`\\n]+`"), false, false, "keyword")
                 ),
                 Prism.token(
@@ -77,7 +77,7 @@ public class PrismMarkdown {
                         )
                     ),
                     Prism.pattern(
-                        Regex("(^\\s*)#+${wildcard}+", RegexFlag.MultiLine),
+                        Regex("(^\\s*)#+${WILDCARD}+", RegexFlag.MultiLine),
                         true,
                         false,
                         "important",

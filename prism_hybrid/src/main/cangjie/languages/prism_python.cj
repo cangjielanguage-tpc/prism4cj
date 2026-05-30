@@ -12,7 +12,7 @@ public class PrismPython {
                 Prism.token(
                     "comment",
                     Prism.pattern(
-                        Regex("(^|[^\\\\])#${wildcard}*"),
+                        Regex("(^|[^\\\\])#${WILDCARD}*"),
                         true
                     )
                 ),

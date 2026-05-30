@@ -39,10 +39,13 @@ public class PrismSyntaxHighlight {
      * @return ArrayList<PrismNodesParseRes> 返回通过 prism 库解析后的结果集
      */
     public func highlight(info: ?String, code: String): ArrayList<PrismNodesParseRes> {
-        if (code.isEmpty() || info.isNone()) {
+        if (code.isEmpty()) {
             return highlightNoLanguageInfo(code)
         }
-        return highlightWithLanguageInfo(this.prism, this.theme, info.getOrThrow(), code)
+        match (info) {
+            case Some(v) => return highlightWithLanguageInfo(this.prism, this.theme, v, code)
+            case None => return highlightNoLanguageInfo(code)
+        }
     }
 
     func highlightNoLanguageInfo(code: String): ArrayList<PrismNodesParseRes> {
@@ -131,19 +134,11 @@ public class PrismNodesParseRes <: ToString {
      * 转换字符串方法
      */
     public func toString(): String {
-        if (alias.isSome() && color.isSome()) {
-            return "PrismNodesParseRes{" + "types=" + types.toString() + ", text=\'" + text + "\'" + ", alias=\'" +
-                alias.getOrThrow() + "}"
-        } else if (alias.isSome()) {
-            return "PrismNodesParseRes{" + "types=" + types.toString() + ", text=\'" + text + "\'" + ", alias=\'" +
-                alias.getOrThrow() + "}"
-        } else if (color.isSome()) {
-            return "PrismNodesParseRes{" + "types=" + types.toString() + ", text=\'" + text + "\'" + ", alias=\'" +
-                "None" + "}"
-        } else {
-            return "PrismNodesParseRes{" + "types=" + types.toString() + ", text=\'" + text + "\'" + ", alias=\'" +
-                "None" + "}"
+        let aliasStr: String = match (alias) {
+            case Some(v) => v
+            case None => "None"
         }
+        return "PrismNodesParseRes{" + "types=" + types.toString() + ", text=\'" + text + "\'" + ", alias=\'" + aliasStr + "}"
     }
 }
 
@@ -151,39 +146,47 @@ class PrismNodeParse {
     static let glg: GrammarLocatorGrammarUtils = GrammarLocatorGrammarUtils()
 
     static func textToArrayList(prism: Prism, colorMap: HashMap<String, UInt32>, info: ?String, literal: String): ArrayList<PrismNodesParseRes> {
-        if (let None <- info) {
-            return ArrayList<PrismNodesParseRes>([PrismNodesParseRes("", literal, Option<String>.None, Option<UInt32>.None)])
+        match (info) {
+            case None => return ArrayList<PrismNodesParseRes>([PrismNodesParseRes("", literal, Option<String>.None, Option<UInt32>.None)])
+            case Some(v) =>
+                let realInfo: String = v.toAsciiLower()
+                var grammar: ?PrismGrammar = None
+                grammar = glg.grammar(prism, realInfo)
+                var list: ArrayList<PrismNode> = try {
+                    prism.tokenize(literal, grammar.getOrThrow())
+                } catch (e: NoneValueException) {
+                    return ArrayList<PrismNodesParseRes>([PrismNodesParseRes("", literal, Option<String>.None, Option<UInt32>.None)])
+                }
+                let listPrismNodesParseRes: ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
+                for (i in 0..list.size) {
+                    PrismNodeParse.iterCurrent(list[i], Option.None, listPrismNodesParseRes)
+                }
+                for (prismNodesParseRes in listPrismNodesParseRes) {
+                    prismNodesParseRes.color = PrismNodeParse.renderColor(colorMap, prismNodesParseRes)
+                }
+                return listPrismNodesParseRes
         }
-        let realInfo: String = info.getOrThrow().toAsciiLower()
-        var grammar: ?PrismGrammar = None
-        grammar = glg.grammar(prism, realInfo)
-        var list: ArrayList<PrismNode> = try {
-            prism.tokenize(literal, grammar.getOrThrow())
-        } catch (e: NoneValueException) {
-            return ArrayList<PrismNodesParseRes>([PrismNodesParseRes("", literal, Option<String>.None, Option<UInt32>.None)])
-        }
-        let listPrismNodesParseRes: ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
-        for (i in 0..list.size) {
-            PrismNodeParse.iterCurrent(list[i], Option.None, listPrismNodesParseRes)
-        }
-        for (prismNodesParseRes in listPrismNodesParseRes) {
-            prismNodesParseRes.color = PrismNodeParse.renderColor(colorMap, prismNodesParseRes)
-        }
-        return listPrismNodesParseRes
     }
 
     static func iterCurrent(node: PrismNode, parent: ?Syntax, objList: ArrayList<PrismNodesParseRes>): Unit {
         if (node.isSyntax()) {
-            let opt: Syntax = (node as Syntax).getOrThrow()
-            for (child in opt.children()) {
-                iterCurrent(child, opt, objList)
+            match (node as Syntax) {
+                case Some(syntaxNode) =>
+                    for (child in syntaxNode.children()) {
+                        iterCurrent(child, syntaxNode, objList)
+                    }
+                case None => throw Exception("Unexpected: node.isSyntax()=true but cast to Syntax failed")
             }
         } else {
-            let obj = PrismNodesParseRes()
-            obj.types = parent?.syntaxType() ?? ""
-            obj.alias = parent?.alias() ?? None
-            obj.text = (node as PrismText).getOrThrow().literal()
-            objList.add(obj)
+            match (node as PrismText) {
+                case Some(textNode) =>
+                    let obj = PrismNodesParseRes()
+                    obj.types = parent?.syntaxType() ?? ""
+                    obj.alias = parent?.alias() ?? None
+                    obj.text = textNode.literal()
+                    objList.add(obj)
+                case None => throw Exception("Unexpected: node.isText()=true but cast to Text failed")
+            }
         }
     }
 
@@ -191,13 +194,12 @@ class PrismNodeParse {
         let types: String = obj.getType()
         let alias: ?String = obj.getAlias()
         var color: ?UInt32 = map.get(types.toAsciiLower())
-        if (color.isNone() && alias.isSome()) {
-            color = map.get(alias.getOrThrow().toAsciiLower())
+        if (color.isNone()) {
+            match (alias) {
+                case Some(v) => color = map.get(v.toAsciiLower())
+                case None => ()
+            }
         }
-        if (color.isSome()) {
-            return color
-        } else {
-            return None
-        }
+        return color
     }
 }

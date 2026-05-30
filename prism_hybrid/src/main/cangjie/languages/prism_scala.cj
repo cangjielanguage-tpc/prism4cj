@@ -58,6 +58,6 @@ public class PrismScala {
 class TokenFilterScalaImpl <: TokenFilter {
     public override func test(token: Token): Bool {
         let name: String = token.name()
-        return "class-name" != name && "function" != name
+        return name != "class-name" && name != "function"
     }
 }

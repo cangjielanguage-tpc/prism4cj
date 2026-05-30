@@ -63,6 +63,12 @@ public class PrismCsharp {
             ])
         )
 
+        // 安全获取 keyword token
+        let keywordToken: Token = match (GrammarUtils.findToken(csharp, "keyword")) {
+            case Some(v) => v
+            case None => throw Exception("Unexpected state: keyword token not found in csharp grammar")
+        }
+
         GrammarUtils.insertBeforeToken(
             csharp,
             "class-name",
@@ -84,7 +90,7 @@ public class PrismCsharp {
                                         classNameInsidePunctuation)
                                 ),
                                 Prism.token("punctuation", Prism.pattern(Regex("[<>(),.:]"))),
-                                GrammarUtils.findToken(csharp, "keyword").getOrThrow()
+                                keywordToken
                             ])
                         ),
                     )
@@ -92,7 +98,7 @@ public class PrismCsharp {
                 Prism.token(
                     "preprocessor",
                     Prism.pattern(
-                        Regex("(^\\s*)#${wildcard}*", RegexFlag.MultiLine),
+                        Regex("(^\\s*)#${WILDCARD}*", RegexFlag.MultiLine),
                         true,
                         false,
                         "property",

@@ -35,13 +35,13 @@ class ClonerImpl <: Cloner {
             return v
         }
         let tokens: ArrayList<Token> = grammar.tokens()
-        var out: ArrayList<Token> = ArrayList<Token>(tokens.size)
-        contextGrammar = GrammarImpl(grammar.name(), out)
-        context.save(MyHashKey<Grammar>(grammar), contextGrammar.getOrThrow())
+        let out: ArrayList<Token> = ArrayList<Token>(tokens.size)
+        let newGrammar: Grammar = GrammarImpl(grammar.name(), out)
+        context.save(MyHashKey<Grammar>(grammar), newGrammar)
         for (i in 0..tokens.size) {
             out.add(clone(context, tokens[i]))
         }
-        return contextGrammar.getOrThrow()
+        return newGrammar
     }
 
     func clone(context: Context, token: Token): Token {
@@ -49,14 +49,14 @@ class ClonerImpl <: Cloner {
         if (let Some(v) <- contextToken) {
             return v
         }
-        var patterns: ArrayList<Pattern> = token.patterns()
-        var out: ArrayList<Pattern> = ArrayList<Pattern>(patterns.size)
-        contextToken = TokenImpl(token.name(), out)
-        context.save(MyHashKey<Token>(token), contextToken.getOrThrow())
+        let patterns: ArrayList<Pattern> = token.patterns()
+        let out: ArrayList<Pattern> = ArrayList<Pattern>(patterns.size)
+        let newToken: Token = TokenImpl(token.name(), out)
+        context.save(MyHashKey<Token>(token), newToken)
         for (i in 0..patterns.size) {
             out.add(clone(context, patterns[i]))
         }
-        return contextToken.getOrThrow()
+        return newToken
     }
 
     func clone(context: Context, pattern: Pattern): Pattern {
@@ -64,15 +64,13 @@ class ClonerImpl <: Cloner {
         if (let Some(v) <- contextPattern) {
             return v
         }
-        var inside: ?Grammar = pattern.inside()
-        if (let Some(v) <- inside) {
-            contextPattern = PatternImpl(pattern.regex(), pattern.lookbehind(), pattern.greedy(), pattern.alias(),
-                clone(context, v))
-        } else {
-            contextPattern = PatternImpl(pattern.regex(), pattern.lookbehind(), pattern.greedy(), pattern.alias(), None)
+        let inside: ?Grammar = pattern.inside()
+        let newPattern: Pattern = match (inside) {
+            case Some(g) => PatternImpl(pattern.regex(), pattern.lookbehind(), pattern.greedy(), pattern.alias(), clone(context, g))
+            case None => PatternImpl(pattern.regex(), pattern.lookbehind(), pattern.greedy(), pattern.alias(), None)
         }
-        context.save(MyHashKey<Pattern>(pattern), contextPattern.getOrThrow())
-        return contextPattern.getOrThrow()
+        context.save(MyHashKey<Pattern>(pattern), newPattern)
+        return newPattern
     }
 }
 
