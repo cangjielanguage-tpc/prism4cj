@@ -58,6 +58,6 @@ public class PrismC {
 class TokenFilterCImpl <: TokenFilter {
     public override func test(token: Token): Bool {
         let name: String = token.name()
-        return "class-name" != name && "Bool" != name
+        return name != "class-name" && name != "Bool"
     }
 }

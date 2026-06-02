@@ -80,25 +80,30 @@ public class PrismKotlin {
         let string: ?Token = GrammarUtils.findToken(kotlin, "string")
         let rawString: ?Token = GrammarUtils.findToken(kotlin, "raw-string")
 
-        if (string.isSome() && rawString.isSome()) {
-            let strValue = string.getOrThrow()
-            let rawStrValue = rawString.getOrThrow()
-            let stringPattern: Pattern = strValue.patterns()[0]
-            let rawStringPattern: Pattern = rawStrValue.patterns()[0]
+        match (string) {
+            case Some(strValue) =>
+                match (rawString) {
+                    case Some(rawStrValue) =>
+                        let stringPattern: Pattern = strValue.patterns()[0]
+                        let rawStringPattern: Pattern = rawStrValue.patterns()[0]
 
-            strValue.patterns().add(
-                Prism.pattern(stringPattern.regex(), stringPattern.lookbehind(), stringPattern.greedy(),
-                stringPattern.alias(), interpolationInside))
+                        strValue.patterns().add(
+                            Prism.pattern(stringPattern.regex(), stringPattern.lookbehind(), stringPattern.greedy(),
+                            stringPattern.alias(), interpolationInside))
 
-            rawStrValue.patterns().add(
-                Prism.pattern(rawStringPattern.regex(), rawStringPattern.lookbehind(), rawStringPattern.greedy(),
-                rawStringPattern.alias(), interpolationInside))
+                        rawStrValue.patterns().add(
+                            Prism.pattern(rawStringPattern.regex(), rawStringPattern.lookbehind(), rawStringPattern.greedy(),
+                            rawStringPattern.alias(), interpolationInside))
 
-            strValue.patterns().remove(at: 0)
-            rawStrValue.patterns().remove(at: 0)
-        } else {
-            throw Exception(
-                "Unexpected state, cannot find `string` and/or `raw-string` tokens " + "inside kotlin grammar")
+                        strValue.patterns().remove(at: 0)
+                        rawStrValue.patterns().remove(at: 0)
+                    case None =>
+                        throw Exception(
+                            "Unexpected state, cannot find `raw-string` token inside kotlin grammar")
+                }
+            case None =>
+                throw Exception(
+                    "Unexpected state, cannot find `string` token inside kotlin grammar")
         }
 
         return kotlin
@@ -107,6 +112,6 @@ public class PrismKotlin {
 
 class TokenFilterKotlinImpl <: TokenFilter {
     public override func test(token: Token): Bool {
-        return "class-name" != token.name()
+        return token.name() != "class-name"
     }
 }

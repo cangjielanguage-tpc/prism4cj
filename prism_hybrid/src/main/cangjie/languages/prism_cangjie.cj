@@ -5,7 +5,7 @@
 package prism4cj.languages
 
 // 将 . 替换成 [^\\r\\n]
-let wildcard: String = "[^\\r\\n]"
+let WILDCARD: String = "[^\\r\\n]"
 
 
 public class PrismCangjie {
@@ -32,7 +32,7 @@ public class PrismCangjie {
                 ),
                 Prism.token(
                     "string",
-                    Prism.pattern(Regex("(?<!#)#+\"([^\"]*(\\\\.[^\"]*)*)\"#+(?!#)|(?<!#)#+\"{3}([^\"]*(\\\\.[^\"]*)*)\"{3}#+(?!#)|\\\"([^\\\"\\\\]*(\\\\.[^\\\"\\\\]*)*)\\\"|\\\"{3}([^\\\"\\\\]*(\\\\.[^\\\"\\\\]*)*)\\\"{3}")),
+                    Prism.pattern(Regex("(?<!#)#+\"([^\"\\\\]|\\\\.)*\"#+(?!#)|(?<!#)#+\"{3}([^\"\\\\]|\\\\.)*\"{3}#+(?!#)|\\\"([^\"\\\\]|\\\\.)*\\\"|\\\"{3}([^\"\\\\]|\\\\.)*\\\"{3}")),
                 ),
                 Prism.token("operator",
                     Prism.pattern(

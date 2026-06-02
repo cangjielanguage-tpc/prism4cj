@@ -54,6 +54,6 @@ public class PrismGo {
 
 class TokenFilterGoImpl <: TokenFilter {
     public override func test(token: Token): Bool {
-        return "class-name" != token.name()
+        return token.name() != "class-name"
     }
 }

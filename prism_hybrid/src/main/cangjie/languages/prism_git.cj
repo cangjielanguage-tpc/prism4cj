@@ -9,9 +9,9 @@ public class PrismGit {
         return GrammarImpl(
             "git",
             ArrayList<Token>([
-                Prism.token("comment", Prism.pattern(Regex("^#${wildcard}*", RegexFlag.MultiLine))),
-                Prism.token("deleted", Prism.pattern(Regex("^[-–]${wildcard}*", RegexFlag.MultiLine))),
-                Prism.token("inserted", Prism.pattern(Regex("^\\+${wildcard}*", RegexFlag.MultiLine))),
+                Prism.token("comment", Prism.pattern(Regex("^#${WILDCARD}*", RegexFlag.MultiLine))),
+                Prism.token("deleted", Prism.pattern(Regex("^[-–]${WILDCARD}*", RegexFlag.MultiLine))),
+                Prism.token("inserted", Prism.pattern(Regex("^\\+${WILDCARD}*", RegexFlag.MultiLine))),
                 Prism.token(
                     "string",
                     Prism.pattern(Regex("(\"|')(?:\\\\.|(?!\\1)[^\\\\\\r\\n])*\\1", RegexFlag.MultiLine))
@@ -19,7 +19,7 @@ public class PrismGit {
                 Prism.token(
                     "command",
                     Prism.pattern(
-                        Regex("^${wildcard}*\\$ git ${wildcard}*", RegexFlag.MultiLine),
+                        Regex("^${WILDCARD}*\\$ git ${WILDCARD}*", RegexFlag.MultiLine),
                         false,
                         false,
                         None,
@@ -31,7 +31,7 @@ public class PrismGit {
                         )
                     )
                 ),
-                Prism.token("coord", Prism.pattern(Regex("^@@${wildcard}*?@@+", RegexFlag.MultiLine))),
+                Prism.token("coord", Prism.pattern(Regex("^@@${WILDCARD}*?@@+", RegexFlag.MultiLine))),
                 Prism.token("commit_sha1", Prism.pattern(Regex("^commit \\w{40}(?=\\s*$)", RegexFlag.MultiLine)))
             ])
         )

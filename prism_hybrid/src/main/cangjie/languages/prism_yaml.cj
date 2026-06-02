@@ -12,16 +12,16 @@ public class PrismYaml {
                 Prism.token("scalar",
                     Prism.pattern(
                     Regex(
-                    "([\\-:]\\s*(?:![^\\s]+)?[ \\t]*[|>])[ \\t]*(?:((?:\\r?\\n|\\r)[ \\t]+)${wildcard}+(?:\\2${wildcard}+)*)"
+                    "([\\-:]\\s*(?:![^\\s]+)?[ \\t]*[|>])[ \\t]*(?:((?:\\r?\\n|\\r)[ \\t]+)${WILDCARD}+(?:\\2${WILDCARD}+)*)"
                 ), true, false, "string")),
-                Prism.token("comment", Prism.pattern(Regex("#${wildcard}*"))),
+                Prism.token("comment", Prism.pattern(Regex("#${WILDCARD}*"))),
                 Prism.token("key",
                     Prism.pattern(
                     Regex(
                     "(\\s*(?:^|[:\\-,\\[{\\r\\n?])[ \\t]*(?:![^\\s]+)?[ \\t]*)[^\\r\\n{\\[\\]},#\\s]+?(?=\\s*:\\s)"),
                     true, false, "atrule")),
                 Prism.token("directive",
-                    Prism.pattern(Regex("(^[ \\t]*)%${wildcard}+", RegexFlag.MultiLine), true, false, "important")),
+                    Prism.pattern(Regex("(^[ \\t]*)%${WILDCARD}+", RegexFlag.MultiLine), true, false, "important")),
                 Prism.token("datetime",
                     Prism.pattern(
                     Regex(

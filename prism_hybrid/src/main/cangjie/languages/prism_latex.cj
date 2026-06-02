@@ -12,7 +12,7 @@ public class PrismLatex {
         return GrammarImpl(
             "latex",
             ArrayList<Token>([
-                Prism.token("comment", Prism.pattern(Regex("%${wildcard}*", RegexFlag.MultiLine))),
+                Prism.token("comment", Prism.pattern(Regex("%${WILDCARD}*", RegexFlag.MultiLine))),
                 Prism.token("cdata",
                     Prism.pattern(Regex("(\\\\begin\\{((?:verbatim|lstlisting)\\*?)\\})[\\s\\S]*?(?=\\\\end\\{\\2\\})"),
                     true)),

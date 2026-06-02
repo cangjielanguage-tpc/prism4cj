@@ -11,7 +11,7 @@ public class PrismSql {
             ArrayList<Token>([
                 Prism.token(
                     "comment",
-                    Prism.pattern(Regex("(^|[^\\\\])(?:\\/\\*[\\s\\S]*?\\*\\/|(?:--|\\/\\/|#)${wildcard}*)"), true)
+                    Prism.pattern(Regex("(^|[^\\\\])(?:\\/\\*[\\s\\S]*?\\*\\/|(?:--|\\/\\/|#)${WILDCARD}*)"), true)
                 ),
                 Prism.token(
                     "string",
