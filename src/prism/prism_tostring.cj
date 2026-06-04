@@ -1,4 +1,4 @@
-package cangjie_tpc::prism4cj.prism
+package prism4cj.prism
 
 abstract class PrismToString {
     static func toString(grammar: Grammar): String {

@@ -1,4 +1,4 @@
-package cangjie_tpc::prism4cj.languages
+package prism4cj.languages
 
 public class PrismJavascript {
     public static func create(prism: Prism): Grammar {

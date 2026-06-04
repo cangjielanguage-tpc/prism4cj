@@ -3,9 +3,9 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v2.0.1-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v2.0.2-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v1.1.3-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v1.2.0-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-94.4%25-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -169,8 +169,8 @@ import std.unittest.*
 import std.unittest.testmacro.*
 import std.fs.*
 import std.collection.*
-import cangjie_tpc::prism4cj.prism.*
-import cangjie_tpc::prism4cj.prism4cj.GrammarLocatorGrammarUtils
+import prism4cj.prism.*
+import prism4cj.GrammarLocatorGrammarUtils
 
 main(): Int64 {
     var test = TestCReadme()
@@ -214,7 +214,7 @@ public class TestCReadme {
 
 | 编号 | 依赖构建工具                                 | 版本号         |
 | ---- | -------------------------------------------- | -------------- |
-| 1    | **cjc**                                      | v1.1.3 |
+| 1    | **cjc**                                      | v1.2.0 |
 
 ## 开源协议
 

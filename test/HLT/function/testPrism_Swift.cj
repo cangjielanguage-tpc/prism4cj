@@ -6,9 +6,9 @@ import std.unittest.AssertException
 import std.unittest.testmacro.*
 import std.fs.*
 import std.collection.*
-import cangjie_tpc::prism4cj.prism.*
-import cangjie_tpc::prism4cj.languages.*
-import cangjie_tpc::prism4cj.GrammarLocatorGrammarUtils
+import prism4cj.prism.*
+import prism4cj.languages.*
+import prism4cj.GrammarLocatorGrammarUtils
 
 @Test
 public class TestSwift {

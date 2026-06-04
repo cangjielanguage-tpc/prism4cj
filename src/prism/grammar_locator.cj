@@ -1,4 +1,4 @@
-package cangjie_tpc::prism4cj.prism
+package prism4cj.prism
 
 /**
  * Basic class to locate grammars

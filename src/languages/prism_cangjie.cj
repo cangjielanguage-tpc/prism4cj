@@ -1,4 +1,4 @@
-package cangjie_tpc::prism4cj.languages
+package prism4cj.languages
 
 // 将 . 替换成 [^\\r\\n]
 let wildcard: String = "[^\\r\\n]"

@@ -1,4 +1,4 @@
-package cangjie_tpc::prism4cj.prism
+package prism4cj.prism
 
 public abstract class Grammar <: Hashable & Equatable<Grammar> & ToString {
     public func name(): String
