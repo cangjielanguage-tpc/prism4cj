@@ -1,4 +1,4 @@
-package cangjie_tpc::prism4cj.languages
+package prism4cj.languages
 
 public class PrismCssExtras {
     public static func create(prism: Prism): ?Grammar {

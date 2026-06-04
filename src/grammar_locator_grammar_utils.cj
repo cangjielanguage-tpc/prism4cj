@@ -1,7 +1,7 @@
-package cangjie_tpc::prism4cj
+package prism4cj
 
-internal import cangjie_tpc::prism4cj.languages.*
-internal import cangjie_tpc::prism4cj.prism.*
+internal import prism4cj.languages.*
+internal import prism4cj.prism.*
 internal import std.collection.ArrayList
 internal import std.collection.HashMap
 internal import std.collection.HashSet
