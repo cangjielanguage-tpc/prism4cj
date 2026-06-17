@@ -1,12 +1,11 @@
+## 1.2.7
+* 版本升级6.1.1.280
+
 ## 1.2.6
 * 版本升级
 
 ## 1.2.5
 * 适配升级5.1.1.851
-
-## 1.2.4
-- Fix Bugs
-- 适配升级5.1.1.840
 
 ## 1.2.3
 - 修复闪退问题
@@ -46,5 +45,5 @@
 - 支持标记不同类型的关键词
 - 支持不同语言的解析器/分发器
 - 支持预定义语法解析器
-    本库目前支持的语法有：    
-    brainfuck、clojure、cangjie、latex、git、makefile、python、sql、yaml、json、markup、markdown、css、css_extras、clike、csharp、dart、go、swift、javascript、groovy、kotlin、java、scala、c、cpp 26种语法
+  本库目前支持的语法有：    
+  brainfuck、clojure、cangjie、latex、git、makefile、python、sql、yaml、json、markup、markdown、css、css_extras、clike、csharp、dart、go、swift、javascript、groovy、kotlin、java、scala、c、cpp 26种语法
