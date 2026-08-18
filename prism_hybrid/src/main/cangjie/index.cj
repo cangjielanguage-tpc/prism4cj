@@ -1,7 +1,12 @@
-package prism4cj
+package prism4cj_hybrid
 
 import ohos.ark_interop.*
 import ohos.ark_interop_macro.*
+
+internal import prism4cj.prism.*
+internal import prism4cj.*
+internal import std.collection.ArrayList
+internal import std.collection.HashMap
 
 func getStackTrace(thrown: ?Exception): String {
     var res: String = ""
@@ -17,7 +22,6 @@ func getStackTrace(thrown: ?Exception): String {
     }
 }
 
-@When[arch == "aarch64"]
 public func arktsCodeStringToColorString(context: JSContext, callInfo: JSCallInfo): JSValue {
     let code = callInfo[0].toString(context)
     let info: ?String = if (callInfo[1].isNull()) {
@@ -57,49 +61,6 @@ public func arktsCodeStringToColorString(context: JSContext, callInfo: JSCallInf
                 let ret = resColor.toJSValue()
                 promise.resolve(ret)
             }
-        }
-    }
-    return promise.toJSValue()
-}
-
-@When[arch == "x86_64"]
-public func arktsCodeStringToColorString(context: JSContext, callInfo: JSCallInfo): JSValue {
-    let code = callInfo[0].toString(context)
-    let info: ?String = if (callInfo[1].isNull()) {
-        None
-    } else {
-        String.fromJSValue(context, callInfo[1])
-    }
-    let isDarkula = Bool.fromJSValue(context, callInfo[2])
-    let PrismNodesParseResColor_factory = callInfo[3].asFunction()
-    let PrismNodesParseRes_factory = callInfo[4].asFunction()
-    let promise = context.promiseCapability()
-    spawn {
-        let prismNodesParseResColor: PrismNodesParseResColor = codeStringToColorString(code, info, isDarkula)
-        context.postJSTask {
-            =>
-            let resColor: JSObject = PrismNodesParseResColor_factory
-                .call(
-                    prismNodesParseResColor.background.toJSValue(context),
-                    prismNodesParseResColor.defaultFontColor.toJSValue(context)
-                )
-                .asObject()
-            for (i in 0..prismNodesParseResColor.getListColor().size) {
-                let cjcolor = prismNodesParseResColor.getListColor()[i]
-                if (cjcolor.text == "\n") {
-                    resColor.callMethod("addBlock")
-                } else {
-                    let jscolor: JSValue = PrismNodesParseRes_factory.call(
-                        cjcolor.types.toJSValue(context),
-                        cjcolor.text.toJSValue(context),
-                        (cjcolor.alias?.toJSValue(context)) ?? context.undefined().toJSValue(),
-                        (cjcolor.color?.toJSValue(context)) ?? context.undefined().toJSValue()
-                    )
-                    resColor.callMethod('addNode', jscolor)
-                }
-            }
-            let ret = resColor.toJSValue()
-            promise.resolve(ret)
         }
     }
     return promise.toJSValue()

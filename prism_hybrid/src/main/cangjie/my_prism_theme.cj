@@ -1,7 +1,7 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-package prism4cj
+package prism4cj_hybrid
 
 class MyPrismTheme <: PrismThemeBase {
     // 背景颜色
