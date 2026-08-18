@@ -2,7 +2,7 @@ import { CustomLib, PrismResCJ } from "libark_interop_api_prism.so";
 import { requireCJLib } from "libark_interop_loader.so";
 import { collections } from "@kit.ArkTS";
 
-let lib = requireCJLib("libprism4cj.so") as CustomLib
+let lib = requireCJLib("libprism4cj_hybrid.so") as CustomLib
 
 const resFactory = (background: number, defaultFontColor: number) => new PrismRes(new collections.Array(), background, defaultFontColor)
 

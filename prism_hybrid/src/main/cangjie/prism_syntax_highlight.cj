@@ -1,7 +1,7 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
  */
-package prism4cj
+package prism4cj_hybrid
 
 import prism4cj.prism.*
 import prism4cj.prism.Text as PrismText
