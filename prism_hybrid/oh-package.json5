@@ -3,7 +3,10 @@
   "version": "1.2.8",
   "description": "对代码块内容进行高亮",
   "main": "Index.ets",
-  "author": "cangjie-tpc",
+  "author": {
+    "name": "cangjie-tpc",
+    "email": "cangjie@huawei.com"
+  },
   "license": "Apache-2.0",
   "repository": "https://gitcode.com/Cangjie-TPC/prism4cj/tree/prism4cj_hybrid_cangjie-plugin_5.1.1",
   "homepage": "https://gitcode.com/Cangjie-TPC",
