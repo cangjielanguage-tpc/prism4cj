@@ -7,6 +7,7 @@ internal import prism4cj.prism.*
 internal import prism4cj.*
 internal import std.collection.ArrayList
 internal import std.collection.HashMap
+import ohos.base.AppLog
 
 func getStackTrace(thrown: ?Exception): String {
     var res: String = ""
@@ -34,33 +35,43 @@ public func arktsCodeStringToColorString(context: JSContext, callInfo: JSCallInf
     let PrismNodesParseRes_factory = callInfo[4].asFunction()
     let promise = context.promiseCapability()
     spawn {
-        let prismNodesParseResColor: PrismNodesParseResColor = codeStringToColorString(code, info, isDarkula)
-        context.postJSTask {
-            =>
-            context.newScope() {
-                let resColor: JSObject = PrismNodesParseResColor_factory
-                    .call(
-                        prismNodesParseResColor.background.toJSValue(context),
-                        prismNodesParseResColor.defaultFontColor.toJSValue(context)
-                    )
-                    .asObject()
-                for (i in 0..prismNodesParseResColor.getListColor().size) {
-                    let cjcolor = prismNodesParseResColor.getListColor()[i]
-                    if (cjcolor.text == "\n") {
-                        resColor.callMethod("addBlock")
-                    } else {
-                        let jscolor: JSValue = PrismNodesParseRes_factory.call(
-                            cjcolor.types.toJSValue(context),
-                            cjcolor.text.toJSValue(context),
-                            (cjcolor.alias?.toJSValue(context)) ?? context.undefined().toJSValue(),
-                            (cjcolor.color?.toJSValue(context)) ?? context.undefined().toJSValue()
+        try {
+            let prismNodesParseResColor: PrismNodesParseResColor = codeStringToColorString(code, info, isDarkula)
+            context.postJSTask {
+                =>
+                newScope(context) {
+                    let resColor: JSObject = PrismNodesParseResColor_factory
+                        .call(
+                            prismNodesParseResColor.background.toJSValue(context),
+                            prismNodesParseResColor.defaultFontColor.toJSValue(context)
                         )
-                        resColor.callMethod('addNode', jscolor)
+                        .asObject()
+                    for (i in 0..prismNodesParseResColor.getListColor().size) {
+                        let cjcolor = prismNodesParseResColor.getListColor()[i]
+                        if (cjcolor.text == "\n") {
+                            resColor.callMethod("addBlock")
+                        } else {
+                            let jscolor: JSValue = PrismNodesParseRes_factory.call(
+                                cjcolor.types.toJSValue(context),
+                                cjcolor.text.toJSValue(context),
+                                (cjcolor.alias?.toJSValue(context)) ?? context.undefined().toJSValue(),
+                                (cjcolor.color?.toJSValue(context)) ?? context.undefined().toJSValue()
+                            )
+                            resColor.callMethod('addNode', jscolor)
+                        }
                     }
+                    let ret = resColor.toJSValue()
+                    promise.resolve(ret)
                 }
-                let ret = resColor.toJSValue()
-                promise.resolve(ret)
             }
+        } catch (e: Exception) {
+            context.postJSTask {
+                =>
+                newScope(context) {
+                    promise.reject(getStackTrace(e).toJSValue(context))
+                }
+            }
+            AppLog.error(getStackTrace(e))
         }
     }
     return promise.toJSValue()
