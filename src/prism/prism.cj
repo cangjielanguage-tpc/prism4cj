@@ -1,4 +1,4 @@
-package cangjie_tpc::prism4cj.prism
+package prism4cj.prism
 
 internal import std.collection.ArrayList
 internal import std.collection.HashMap

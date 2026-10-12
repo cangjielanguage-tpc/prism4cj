@@ -1,4 +1,4 @@
-package cangjie_tpc::prism4cj.prism
+package prism4cj.prism
 
 public abstract class Pattern <: Hashable & Equatable<Pattern> & ToString {
     public func regex(): Regex

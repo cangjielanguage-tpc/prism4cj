@@ -1,16 +1,16 @@
-package cangjie_tpc::prism4cj.languages
+package prism4cj.languages
 
 internal import std.collection.ArrayList
 internal import std.regex.Regex
 internal import std.regex.RegexOption
 internal import std.regex.RegexFlag
-internal import cangjie_tpc::prism4cj.prism.Grammar
-internal import cangjie_tpc::prism4cj.prism.GrammarImpl
-internal import cangjie_tpc::prism4cj.prism.Prism
-internal import cangjie_tpc::prism4cj.prism.Token
-internal import cangjie_tpc::prism4cj.prism.Pattern
-internal import cangjie_tpc::prism4cj.prism.GrammarUtils
-internal import cangjie_tpc::prism4cj.prism.TokenFilter
+internal import prism4cj.prism.Grammar
+internal import prism4cj.prism.GrammarImpl
+internal import prism4cj.prism.Prism
+internal import prism4cj.prism.Token
+internal import prism4cj.prism.Pattern
+internal import prism4cj.prism.GrammarUtils
+internal import prism4cj.prism.TokenFilter
 
 public abstract class PrismClike {
     public static func create(): Grammar {
