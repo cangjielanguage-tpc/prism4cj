@@ -3,7 +3,6 @@ package prism4cj.languages
 internal import std.collection.ArrayList
 internal import std.regex.Regex
 internal import std.regex.RegexOption
-internal import std.regex.RegexFlag
 internal import prism4cj.prism.Grammar
 internal import prism4cj.prism.GrammarImpl
 internal import prism4cj.prism.Prism
@@ -24,7 +23,7 @@ public abstract class PrismClike {
                 ),
                 Prism.token(
                     "string",
-                    Prism.pattern(Regex("([\"'])(?:\\\\(?:\\r\\n|[\\s\\S])|(?!\\1)[^\\\\\\r\\n])*\\1"), false, true)/*cjlint-ignore !G.CHK.04 */
+                    Prism.pattern(Regex("([\"'])(?:\\\\(?:\\r\\n|[\\s\\S])|(?!\\1)[^\\\\\\r\\n])*\\1"), false, true)
                 ),
                 Prism.token(
                     "class-name",
@@ -43,8 +42,8 @@ public abstract class PrismClike {
                     ))
                 ),
                 Prism.token("boolean", Prism.pattern(Regex("\\b(?:true|false)\\b"))),
-                Prism.token("function", Prism.pattern(Regex("[a-z0-9_]+(?=\\()", RegexFlag.IgnoreCase))),
-                Prism.token("number", Prism.pattern(Regex("\\b0x[\\da-f]+\\b|(?:\\b\\d+\\.?\\d*|\\B\\.\\d+)(?:e[+-]?\\d+)?", RegexFlag.IgnoreCase))),
+                Prism.token("function", Prism.pattern(Regex("[a-z0-9_]+(?=\\()", RegexOption().ignoreCase()))),
+                Prism.token("number", Prism.pattern(Regex("\\b0x[\\da-f]+\\b|(?:\\b\\d+\\.?\\d*|\\B\\.\\d+)(?:e[+-]?\\d+)?",RegexOption().ignoreCase()))),
                 Prism.token(
                     "operator",
                     Prism.pattern(Regex("--?|\\+\\+?|!=?=?|<=?|>=?|==?=?|&&?|\\|\\|?|\\?|\\*|\\/|~|\\^|%"))

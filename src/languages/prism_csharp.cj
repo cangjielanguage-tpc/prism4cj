@@ -31,20 +31,20 @@ public class PrismCsharp {
                 Prism.token(
                     "class-name",
                     Prism.pattern(
-                        Regex("\\b[A-Z]\\w*(?:\\.\\w+)*\\b(?=\\s*[^\\s()])"),/*cjlint-ignore !G.CHK.04 */
+                        Regex("\\b[A-Z]\\w*(?:\\.\\w+)*\\b(?=\\s*[^\\s()])"),
                         false,
                         false,
                         None
                     ),
                     Prism.pattern(
-                        Regex("(\\[)[A-Z]\\w*(?:\\.\\w+)*\\b"),/*cjlint-ignore !G.CHK.04 */
+                        Regex("(\\[)[A-Z]\\w*(?:\\.\\w+)*\\b"),
                         true,
                         false,
                         None,
                         classNameInsidePunctuation
                     ),
                     Prism.pattern(
-                        Regex("((?:\\b(?:class|interface|new)\\s+)|(?:catch\\s+\\())[A-Z]\\w*(?:\\.\\w+)*\\b"),/*cjlint-ignore !G.CHK.04 */
+                        Regex("((?:\\b(?:class|interface|new)\\s+)|(?:catch\\s+\\())[A-Z]\\w*(?:\\.\\w+)*\\b"),
                         true,
                         false,
                         None,
@@ -54,7 +54,7 @@ public class PrismCsharp {
                 Prism.token(
                     "number",
                     Prism.pattern(
-                        Regex("\\b0x[\\da-f]+\\b|(?:\\b\\d+\\.?\\d*|\\B\\.\\d+)f?", RegexFlag.IgnoreCase))
+                        Regex("\\b0x[\\da-f]+\\b|(?:\\b\\d+\\.?\\d*|\\B\\.\\d+)f?", RegexOption().ignoreCase()))
                 )
             ])
         )
@@ -76,7 +76,7 @@ public class PrismCsharp {
                                 Prism.token("function", Prism.pattern(Regex("^\\w+"))),
                                 Prism.token(
                                     "class-name",
-                                    Prism.pattern(Regex("\\b[A-Z]\\w*(?:\\.\\w+)*\\b"), false, false, None,/*cjlint-ignore !G.CHK.04 */
+                                    Prism.pattern(Regex("\\b[A-Z]\\w*(?:\\.\\w+)*\\b"), false, false, None,
                                         classNameInsidePunctuation)
                                 ),
                                 Prism.token("punctuation", Prism.pattern(Regex("[<>(),.:]"))),
@@ -88,7 +88,7 @@ public class PrismCsharp {
                 Prism.token(
                     "preprocessor",
                     Prism.pattern(
-                        Regex("(^\\s*)#${wildcard}*", RegexFlag.MultiLine),
+                        Regex("(^\\s*)#${wildcard}*", RegexOption().multiLine()),
                         true,
                         false,
                         "property",

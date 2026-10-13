@@ -5,57 +5,46 @@ internal import prism4cj.prism.*
 internal import std.collection.ArrayList
 internal import std.collection.HashMap
 internal import std.collection.HashSet
-internal import std.sync.Mutex
 
 public class GrammarLocatorGrammarUtils <: GrammarLocator {
-    // Language factories can recursively load dependencies through prism.grammar().
-    // std.sync.Mutex is documented as reentrant, so recursive lookups can safely
-    // re-enter this lock.
-    private let lock: Mutex = Mutex()
-    private let cache: HashMap<String, Grammar> = HashMap<String, Grammar>(4)
-    private let NULL = GrammarImpl("this is a null value", ArrayList<Token>())
+    let cache: HashMap<String, Grammar> = HashMap<String, Grammar>(4)
+    let NULL = GrammarImpl("this is a null value", ArrayList<Token>())
     public init() {
     }
 
     public func register(name: String, grammar: Grammar): Unit {
-        synchronized (lock) {
-            this.cache.add(name, grammar)
-        }
+        this.cache.add(name, grammar)
     }
 
     public func grammar(prism: Prism, language: String): ?Grammar {
-        return synchronized (lock) {
-            let name: String = this.realLanguageName(language)
-            var grammar: ?Grammar = this.cache.get(name)
-            match (grammar) {
-                case Some(v: GrammarImpl) where refEq(v, NULL) => None
-                case Some(v) =>
-                    if (name != language) {
-                        this.grammar2(prism, language)
-                    } else {
-                        v
-                    }
-                case None =>
-                    grammar = this.obtainGrammar(prism, name)
-                    if (grammar.isNone()) {
-                        this.cache.add(name, NULL)
-                    } else {
-                        this.cache.add(name, grammar.getOrThrow())
-                    }
-                    if (language != name) {
-                        this.triggerModify(prism, name)
-                    }
-                    grammar
-            }
+        let name: String = this.realLanguageName(language)
+        var grammar: ?Grammar = this.cache.get(name)
+        match (grammar) {
+            case Some(v: GrammarImpl) where refEq(v, NULL) => return None
+            case Some(v) => 
+                if (name != language) {
+                    return grammar2(prism, language)
+                }
+                return v
+            case None =>
+                grammar = this.obtainGrammar(prism, name)
+                if (grammar.isNone()) {
+                    this.cache.add(name, NULL)
+                } else {
+                    this.cache.add(name, grammar.getOrThrow())
+                }
+                if(language != name) {
+                    this.triggerModify(prism, name)
+                }
+                return grammar
         }
     }
 
-    // Callers must hold lock.
-    private func grammar2(prism: Prism, language: String): ?Grammar {
+    func grammar2(prism: Prism, language: String): ?Grammar {
         var grammar: ?Grammar = this.cache.get(language)
         match (grammar) {
-            case Some(v: GrammarImpl) where refEq(v, NULL) => None
-            case Some(v) => v
+            case Some(v: GrammarImpl) where refEq(v, NULL) => return None
+            case Some(v) => return v
             case None =>
                 grammar = this.obtainGrammar(prism, language)
                 if (grammar.isNone()) {
@@ -64,7 +53,7 @@ public class GrammarLocatorGrammarUtils <: GrammarLocator {
                     this.cache.add(language, grammar.getOrThrow())
                 }
                 this.triggerModify(prism, language)
-                grammar
+                return grammar
         }
     }
 

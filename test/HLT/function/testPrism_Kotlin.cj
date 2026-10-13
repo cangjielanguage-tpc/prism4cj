@@ -103,7 +103,6 @@ public class TestKotlin {
 
     @TestCase
     public func test_Kotlin_06(): Unit {
-        assertTag = false
         try {
             let fileArr: Collection<FileInfo> = TestUtils.testFiles("")
             var prism: Prism = Prism(GrammarLocatorGrammarUtils())
@@ -116,8 +115,7 @@ public class TestKotlin {
                 }
             }
         } catch (e: FSException) {
-            @Assert(e.message.size > 0, true)
-            @Assert(assertTag, false)
+            @Assert(e.message,"The file read Error.")
         }
     }
 
@@ -135,7 +133,7 @@ public class TestKotlin {
                 }
             }
         } catch (e: FSException) {
-            @Assert(e.message.contains("The input path"),true)
+            @Assert(e.message.contains("The path"),true)
             @Assert(e.message.contains("does not exist"),true)
         }
     }

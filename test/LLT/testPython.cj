@@ -65,7 +65,6 @@ public class TestPython {
 
     @TestCase
     public func test03(): Unit {
-        error = true
         let e = @AssertThrows[FSException]({=>
             let fileArr: Collection<FileInfo> = TestUtils.testFiles("")
             var prism: Prism = Prism(GrammarLocatorGrammarUtils())
@@ -78,8 +77,7 @@ public class TestPython {
                 }    
             }
         }())
-        @Assert(e.message.size > 0, true)
-        @Assert(error, true)
+        @Assert(e.toString(), "FSException: The file read Error.")
     }
 
     @TestCase

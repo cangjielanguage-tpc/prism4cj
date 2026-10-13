@@ -12,7 +12,7 @@ public abstract class PrismCss {
                 Prism.token(
                     "atrule",
                     Prism.pattern(
-                        Regex("@[\\w-]+?.*?(?:;|(?=\\s*\\{))", RegexFlag.IgnoreCase),
+                        Regex("@[\\w-]+?.*?(?:;|(?=\\s*\\{))", RegexOption().ignoreCase()),
                         false,
                         false,
                         None,
@@ -26,8 +26,8 @@ public abstract class PrismCss {
                     "url",
                     Prism.pattern(
                         Regex(
-                            "url\\((?:([\"'])(?:\\\\(?:\\r\\n|[\\s\\S])|(?!\\1)[^\\\\\\r\\n])*\\1|.*?)\\)",/*cjlint-ignore !G.CHK.04 */
-                            RegexFlag.IgnoreCase
+                            "url\\((?:([\"'])(?:\\\\(?:\\r\\n|[\\s\\S])|(?!\\1)[^\\\\\\r\\n])*\\1|.*?)\\)",
+                            RegexOption().ignoreCase()
                         )
                     )
                 ),
@@ -38,10 +38,10 @@ public abstract class PrismCss {
                 ),
                 Prism.token(
                     "property",
-                    Prism.pattern(Regex("[-_a-z\\p{L}][-\\w\\p{L}]*(?=\\s*:)", [RegexFlag.IgnoreCase, RegexFlag.Unicode]))
+                    Prism.pattern(Regex("[-_a-z\\xA0-\\xFF][-\\w\\xA0-\\xFF]*(?=\\s*:)", RegexOption().ignoreCase()))
                 ),
-                Prism.token("important", Prism.pattern(Regex("\\B!important\\b", RegexFlag.IgnoreCase))),
-                Prism.token("function", Prism.pattern(Regex("[-a-z0-9]+(?=\\()", RegexFlag.IgnoreCase))),
+                Prism.token("important", Prism.pattern(Regex("\\B!important\\b", RegexOption().ignoreCase()))),
+                Prism.token("function", Prism.pattern(Regex("[-a-z0-9]+(?=\\()", RegexOption().ignoreCase()))),
                 Prism.token("punctuation", Prism.pattern(Regex("[(){};:]")))
             ])
         )
@@ -66,7 +66,7 @@ public abstract class PrismCss {
                         "style",
                         ArrayList<Pattern>([
                             Prism.pattern(
-                                Regex("(<style[\\s\\S]*?>)[\\s\\S]*?(?=<\\/style>)", RegexFlag.IgnoreCase),
+                                Regex("(<style[\\s\\S]*?>)[\\s\\S]*?(?=<\\/style>)", RegexOption().ignoreCase()),
                                 true,
                                 true,
                                 "language-css",
@@ -98,7 +98,7 @@ public abstract class PrismCss {
                     Prism.token(
                         "style-attr",
                         Prism.pattern(
-                            Regex("\\s*style=(\"|')(?:\\\\[\\s\\S]|(?!\\1)[^\\\\])*\\1", RegexFlag.IgnoreCase),
+                            Regex("\\s*style=(\"|')(?:\\\\[\\s\\S]|(?!\\1)[^\\\\])*\\1", RegexOption().ignoreCase()),
                             false,
                             false,
                             "language-css",
@@ -107,14 +107,14 @@ public abstract class PrismCss {
                                 ArrayList<Token>([
                                     Prism.token(
                                         "attr-name",
-                                        Prism.pattern(Regex("^\\s*style", RegexFlag.IgnoreCase), false, false,
+                                        Prism.pattern(Regex("^\\s*style", RegexOption().ignoreCase()), false, false,
                                             None, markupTagInside)
                                     ),
                                     Prism.token("punctuation", Prism.pattern(Regex("^\\s*=\\s*['\"]|['\"]\\s*$"))),
                                     Prism.token(
                                         "attr-value",
                                         Prism.pattern(
-                                            Regex(".+", RegexFlag.IgnoreCase),
+                                            Regex(".+", RegexOption().ignoreCase()),
                                             false,
                                             false,
                                             None,

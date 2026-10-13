@@ -25,7 +25,7 @@ public class PrismMarkdown {
         let italic: Token = Prism.token(
             "italic",
             Prism.pattern(
-                Regex("(^|[^\\\\])([*_])(?:(?:\\r?\\n|\\r)(?!\\r?\\n|\\r)|.)+?\\2"),/*cjlint-ignore !G.CHK.04 */
+                Regex("(^|[^\\\\])([*_])(?:(?:\\r?\\n|\\r)(?!\\r?\\n|\\r)|.)+?\\2"),
                 true,
                 false,
                 None,
@@ -54,10 +54,10 @@ public class PrismMarkdown {
             markdown,
             "prolog",
             ArrayList<Token>([
-                Prism.token("blockquote", Prism.pattern(Regex("^>(?:[\\t ]*>)*", RegexFlag.MultiLine))),/*cjlint-ignore !G.CHK.04 */
+                Prism.token("blockquote", Prism.pattern(Regex("^>(?:[\\t ]*>)*", RegexOption().multiLine()))),
                 Prism.token(
                     "code",
-                    Prism.pattern(Regex("^(?: {4}|\\t)${wildcard}+", RegexFlag.MultiLine), false, false, "keyword"),
+                    Prism.pattern(Regex("^(?: {4}|\\t)(?![ \\t]*(?:[*+-]|\\d+[.)])(?:[\\t ]+|$))${wildcard}+", RegexOption().multiLine()), false, false, "keyword"),
                     Prism.pattern(Regex("``.+?``|`[^`\\n]+`"), false, false, "keyword")
                 ),
                 Prism.token(
@@ -73,7 +73,7 @@ public class PrismMarkdown {
                         )
                     ),
                     Prism.pattern(
-                        Regex("(^\\s*)#+${wildcard}+", RegexFlag.MultiLine),
+                        Regex("(^\\s*)#+${wildcard}+", RegexOption().multiLine()),
                         true,
                         false,
                         "important",
@@ -86,7 +86,7 @@ public class PrismMarkdown {
                 Prism.token(
                     "hr",
                     Prism.pattern(
-                        Regex("(^\\s*)([*-])(?:[\\t ]*\\2){2,}(?=\\s*$)", RegexFlag.MultiLine),/*cjlint-ignore !G.CHK.04 */
+                        Regex("(^\\s*)([*-])(?:[\\t ]*\\2){2,}(?=\\s*$)", RegexOption().multiLine()),
                         true,
                         false,
                         "punctuation"
@@ -95,7 +95,7 @@ public class PrismMarkdown {
                 Prism.token(
                     "list",
                     Prism.pattern(
-                        Regex("(^\\s*)(?:[*+-]|\\d+\\.)(?=[\\t ].)", RegexFlag.MultiLine),
+                        Regex("(^\\s*)(?:[*+-]|\\d+\\.)(?=[\\t ].)", RegexOption().multiLine()),
                         true,
                         false,
                         "punctuation"

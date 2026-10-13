@@ -15,6 +15,7 @@ public class TestCangjie {
     var assertTag = false
     @TestCase
     public func test01(): Unit {
+
         let fileArr: Collection<FileInfo> = TestUtils.testFiles("cangjie")
         var prism: Prism = Prism(GrammarLocatorGrammarUtils())
         var c: Case
@@ -49,7 +50,6 @@ public class TestCangjie {
 
     @TestCase
     public func test03(): Unit {
-        assertTag = false
         try {
             let fileArr: Collection<FileInfo> = TestUtils.testFiles("")
             var prism: Prism = Prism(GrammarLocatorGrammarUtils())
@@ -62,8 +62,7 @@ public class TestCangjie {
                 }
             }
         } catch (e: FSException) {
-            @Assert(e.message.size > 0, true)
-            @Assert(assertTag, false)
+            @Assert(e.message,"The file read Error.")
         }
     }
 

@@ -13,12 +13,12 @@ public class PrismGroovy {
                 ))),
                 Prism.token("string",
                     Prism.pattern(Regex("(\"\"\"|''')[\\s\\S]*?\\1|(?:\\$\\/)(?:\\$\\/\\$|[\\s\\S])*?\\/\\$"), false,
-                    true), Prism.pattern(Regex("([\"'\\/])(?:\\\\.|(?!\\1)[^\\\\\\r\\n])*\\1"), false, true)),/*cjlint-ignore !G.CHK.04 */
+                    true), Prism.pattern(Regex("([\"'\\/])(?:\\\\.|(?!\\1)[^\\\\\\r\\n])*\\1"), false, true)),
                 Prism.token("number",
                     Prism.pattern(
                     Regex(
                     "\\b(?:0b[01_]+|0x[\\da-f_]+(?:\\.[\\da-f_p\\-]+)?|[\\d_]+(?:\\.[\\d_]+)?(?:e[+-]?[\\d]+)?)[glidf]?\\b",
-                    RegexFlag.IgnoreCase))),
+                    RegexOption().ignoreCase()))),
                 Prism.token("operator",
                     Prism.pattern(
                     Regex(

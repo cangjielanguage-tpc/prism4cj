@@ -15,7 +15,7 @@ public class PrismMakefile {
                 Prism.token(
                     "string",
                     Prism.pattern(
-                        Regex("([\"'])(?:\\\\(?:\\r\\n|[\\s\\S])|(?!\\1)[^\\\\\\r\\n])*\\1"),/*cjlint-ignore !G.CHK.04 */
+                        Regex("([\"'])(?:\\\\(?:\\r\\n|[\\s\\S])|(?!\\1)[^\\\\\\r\\n])*\\1"),
                         false,
                         true
                     )
@@ -24,7 +24,7 @@ public class PrismMakefile {
                 Prism.token(
                     "symbol",
                     Prism.pattern(
-                        Regex("^[^:=\\r\\n]+(?=\\s*:(?!=))", RegexFlag.MultiLine),
+                        Regex("^[^:=\\r\\n]+(?=\\s*:(?!=))", RegexOption().multiLine()),
                         false,
                         false,
                         None,
