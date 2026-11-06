@@ -1,6 +1,6 @@
 {
   "name": "@cangjie-tpc/prism_hybrid",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "对代码块内容进行高亮",
   "main": "Index.ets",
   "author": "cangjie-tpc",
