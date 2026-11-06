@@ -7,8 +7,8 @@ internal import std.collection.HashMap
 internal import std.collection.HashSet
 
 public class GrammarLocatorGrammarUtils <: GrammarLocator {
-    let cache: HashMap<String, Grammar> = HashMap<String, Grammar>(4)
-    let NULL = GrammarImpl("this is a null value", ArrayList<Token>())
+    private let cache: HashMap<String, Grammar> = HashMap<String, Grammar>(4)
+    private let NULL = GrammarImpl("this is a null value", ArrayList<Token>())
     public init() {
     }
 
@@ -33,14 +33,14 @@ public class GrammarLocatorGrammarUtils <: GrammarLocator {
                 } else {
                     this.cache.add(name, grammar.getOrThrow())
                 }
-                if(language != name) {
+                if (language != name) {
                     this.triggerModify(prism, name)
                 }
                 return grammar
         }
     }
 
-    func grammar2(prism: Prism, language: String): ?Grammar {
+    private func grammar2(prism: Prism, language: String): ?Grammar {
         var grammar: ?Grammar = this.cache.get(language)
         match (grammar) {
             case Some(v: GrammarImpl) where refEq(v, NULL) => return None

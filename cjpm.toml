@@ -6,8 +6,23 @@
       [target.aarch64-linux-ohos.bin-dependencies.package-option]
   [target.x86_64-linux-ohos]
     compile-option = "-B \"${DEVECO_CANGJIE_HOME}/compiler/third_party/llvm/bin\" -B \"${DEVECO_OH_NATIVE_HOME}/sysroot/usr/lib/x86_64-linux-ohos\" -L \"${DEVECO_OH_NATIVE_HOME}/sysroot/usr/lib/x86_64-linux-ohos\" -L \"${DEVECO_OH_NATIVE_HOME}/llvm/lib/clang/15.0.4/lib/x86_64-linux-ohos\" -L \"${DEVECO_OH_NATIVE_HOME}/llvm/lib/x86_64-linux-ohos\" -L \"${DEVECO_CANGJIE_HOME}/build/linux_ohos_x86_64_llvm/openssl\" --sysroot \"${DEVECO_OH_NATIVE_HOME}/sysroot\""
+    link-option = "-z relro -z now -z noexecstack"
     [target.x86_64-linux-ohos.bin-dependencies]
       path-option = [ "${X86_64_OHOS_LIBS}", "${X86_64_OHOS_MACRO_LIBS}", "${X86_64_OHOS_KIT_LIBS}"]
+
+  [target.aarch64-unknown-linux-gnu]
+    link-option = "-z relro -z now -z noexecstack"
+
+  [target.x86_64-unknown-linux-gnu]
+    link-option = "-z relro -z now -z noexecstack"
+
+  [target.x86_64-w64-mingw32]
+    link-option = "--nxcompat --dynamicbase --high-entropy-va"
+
+  [target.x86_64-w64-mingw32.bin-dependencies]
+    path-option = ["${X86_64_LIBS}", "${X86_64_MACRO_LIBS}", "${X86_64_KIT_LIBS}"]
+    package-option = {}
+
   [target.x86_64-unknown-windows-gnu]
     [target.x86_64-unknown-windows-gnu.bin-dependencies]
       path-option = [ "${X86_64_LIBS}", "${X86_64_MACRO_LIBS}"]
@@ -24,7 +39,7 @@
   output-type = "dynamic"
   src-dir = "src"
   target-dir = ""
-  version = "1.0.6"
+  version = "1.0.7"
   package-configuration = {}
   scripts = {}
 
