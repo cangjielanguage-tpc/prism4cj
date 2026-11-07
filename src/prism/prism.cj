@@ -75,6 +75,7 @@ public class Prism {
                 let greedy: Bool = pattern.greedy()
                 var lookbehindLength: Int64 = 0
                 let regex: Regex = pattern.regex()
+                let patternInside: ?Grammar = pattern.inside()
                 // Don't cache textLength as it changes during the loop
                 var i: Int64 = index
                 var position: Int64 = startPosition
@@ -84,30 +85,33 @@ public class Prism {
                             "prism internal error. Number of entry nodes " + "is greater that the text length.\n" +
                             "Nodes: " + entries.toString() + "\n" + "Text: " + text)
                     }
-                    let node: ?Node = entries.get(i)
-                    if (node.isSome() && isSyntaxNode(node.getOrThrow())) {
-                        position += node.getOrThrow().textLength()
+                    let node: Node = entries[i]
+                    if (isSyntaxNode(node)) {
+                        position += node.textLength()
                         i++
                         continue
                     }
-                    var str: String = ""
-                    if (node.isSome()) {
-                        str = (node.getOrThrow() as Text).getOrThrow().literal()
+                    let textNode: Text = match (node as Text) {
+                        case Some(v) => v
+                        case None => break
                     }
-                    var matcher: Matcher
+                    var str: String = textNode.literal()
                     var deleteCount: Int64
                     var greedyMatch: Bool
                     var greedyAdd: Int64 = 0
                     var matchData: ?MatchData = None
                     if (greedy && i != entries.size - 1) {
-                        matcher = regex.matcher(text)
+                        let matcher: Matcher = regex.matcher(text)
                         // limit search to the position (?)
                         matcher.setRegion(position, textLength)
                         matchData = matcher.find()
                         if (matchData.isNone()) {
                             break
                         }
-                        var matchRealData: MatchData = matchData.getOrThrow()
+                        let matchRealData: MatchData = match (matchData) {
+                            case Some(v) => v
+                            case None => break
+                        }
                         var begin: Int64 = matchRealData.matchPosition().start
                         if (lookbehind) {
                             try {
@@ -125,12 +129,13 @@ public class Prism {
                         var k = i
                         var p = position
                         let len: Int64 = entries.size
-                        while (k < len && (p < to || (!isSyntaxNode(entries.get(k).getOrThrow()) &&
-                                !isGreedyNode(entries.get(k - 1).getOrThrow())))) {
-                            match (entries.get(k)) {
-                                case Some(v) => p += v.textLength()
-                                case None => ()
+                        while (k < len) {
+                            let current: Node = entries[k]
+                            if (!(p < to || (!isSyntaxNode(current) &&
+                                !isGreedyNode(entries[k - 1])))) {
+                                break
                             }
+                            p += current.textLength()
                             // Move the index i to the element in strarr that is closest to from
                             if (begin >= p) {
                                 i += 1
@@ -138,8 +143,8 @@ public class Prism {
                             }
                             k++
                         }
-                        if (entries.get(i).isSome() && isSyntaxNode(entries[i])) {
-                            position += entries.get(i).getOrThrow().textLength()
+                        if (i < entries.size && isSyntaxNode(entries[i])) {
+                            position += entries[i].textLength()
                             i++
                             continue
                         }
@@ -149,21 +154,23 @@ public class Prism {
                         str = text[position..p]
                     } else {
                         greedyMatch = false
-                        matcher = regex.matcher(str)
                         deleteCount = 1
                     }
                     if (!greedyMatch) {
-                        matchData = matcher.find()
+                        matchData = regex.find(str, group: lookbehind)
                         if (matchData.isNone()) {
                             if (oneShot) {
                                 break
                             }
-                            position += entries.get(i).getOrThrow().textLength()
+                            position += node.textLength()
                             i++
                             continue
                         }
                     }
-                    let matchRealData2 = matchData.getOrThrow()
+                    let matchRealData2: MatchData = match (matchData) {
+                        case Some(v) => v
+                        case None => break
+                    }
                     if (lookbehind) {
                         var group: String = ""
                         try {
@@ -203,17 +210,16 @@ public class Prism {
                         entries.add(TextImpl(before), at: i2)
                         i2++
                     }
+                    let hasInside: Bool = patternInside.isSome()
                     var tokenEntries: ArrayList<Node>
-                    let inside: ?Grammar = pattern.inside()
-                    var hasInside: Bool = if (inside.isSome()) {
-                        true
-                    } else {
-                        false
-                    }
                     if (hasInside) {
-                        tokenEntries = tokenize(mat, inside.getOrThrow())
+                        tokenEntries = tokenize(mat, match (patternInside) {
+                            case Some(v) => v
+                            case None => break
+                        })
                     } else {
-                        tokenEntries = ArrayList<Node>([TextImpl(mat)])
+                        tokenEntries = ArrayList<Node>(1)
+                        tokenEntries.add(TextImpl(mat))
                     }
                     let syntaxImp: Syntax = SyntaxImpl(token.name(), tokenEntries, pattern.alias(), mat, greedy,
                         hasInside)
@@ -250,6 +256,12 @@ public class Prism {
     }
 
     private static func isGreedyNode(node: Node): Bool {
-        return node.isSyntax() && (node as Syntax).getOrThrow().greedy()
+        if (!node.isSyntax()) {
+            return false
+        }
+        return match (node as Syntax) {
+            case Some(v) => v.greedy()
+            case None => false
+        }
     }
 }
