@@ -57,7 +57,7 @@ public class PrismMarkdown {
                 Prism.token("blockquote", Prism.pattern(Regex("^>(?:[\\t ]*>)*", RegexFlag.MultiLine))),/*cjlint-ignore !G.CHK.04 */
                 Prism.token(
                     "code",
-                    Prism.pattern(Regex("^(?: {4}|\\t)${wildcard}+", RegexFlag.MultiLine), false, false, "keyword"),
+                    Prism.pattern(Regex("((?:^|\\n)[ \\t]*\\n|(?:^|\\r\\n?)[ \\t]*\\r\\n?)(?: {4}|\\t)(?:${wildcard}|(?:\\n|\\r\\n?)(?: {4}|\\t)${wildcard})+"), true, false, "keyword"),
                     Prism.pattern(Regex("``.+?``|`[^`\\n]+`"), false, false, "keyword")
                 ),
                 Prism.token(
